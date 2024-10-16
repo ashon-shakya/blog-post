@@ -38,3 +38,18 @@ export const getPost = async () => {
   const data = await Post.find().populate("author").exec();
   return data;
 };
+
+export const getPostById = async (postid) => {
+  const data = await Post.findById(postid).populate("author").exec();
+  return data;
+};
+
+export const deletePostById = async (postid) => {
+  await Post.findByIdAndDelete(postid);
+};
+
+export const searchPost = async (query) => {
+  const postData = Post.find({ title: { $regex: query, $options: "i" } });
+
+  return postData;
+};

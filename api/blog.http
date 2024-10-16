@@ -3,8 +3,8 @@ POST http://localhost:3000/api/v1/auth/signup
 Content-Type: application/json
 
 {
-  "username": "TEST",
-  "email": "test@gmail.com",
+  "username": "test2",
+  "email": "test2@gmail.com",
   "password": "password"
 }
 
@@ -14,7 +14,7 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email" : "test@gmail.com",
+  "email" : "test2@gmail.com",
   "password": "password"
 }
 
@@ -28,9 +28,29 @@ Content-Type: application/json
 {
   "title": "POST2",
   "content": "CONTENT POST",
-  "image": "https://fastly.picsum.photos/id/947/200/300.jpg?hmac=xWi3fTvb1sKlC9ahIla_xr0F3Bjq9UIpXx19e7EMG4o"
+  "image": "https://fastly.picsum.photos/id/947/200/300.jpg?hmac=xWi3fTvb1sKlC9ahIla_xr0F3Bjq9UIpXx19e7EMG4o",
 }
 
 ###
 
 GET http://localhost:3000/api/v1/post
+
+
+###
+
+
+GET http://localhost:3000/api/v1/post/670f135b1428d14befab0b47?test=queryString
+Content-Type: application/json
+
+{
+  "randombody" : "requestbody"
+}
+
+###
+
+DELETE http://localhost:3000/api/v1/post/670f135b1428d14befab0b47
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2NzBmMGIxYmZjNDk1ZDI0ZjNlYjVlYWEiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNzI5MDQwNjk4LCJleHAiOjE3MjkxMjcwOTh9.UfJaPu5-ZHn3ExC6hBgLsiDL_J4y3jMxwrzCa3nWRqI
+
+
+###
+GET http://localhost:3000/api/v1/post/search/te

@@ -12,8 +12,6 @@ export const authenticateJwt = (req, res, next) => {
     } else {
       const decoded = jwt.verify(token, jwtSecret);
 
-      console.log(decoded);
-
       req.user = decoded;
 
       next();
