@@ -31,7 +31,7 @@ export const getPosts = async () => {
 };
 
 export const getPostById = async (id) => {
-  return await Post.findById(id);
+  return await Post.findById(id).populate("author").exec();
 };
 
 export const createPost = async (post) => {

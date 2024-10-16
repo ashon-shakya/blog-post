@@ -17,11 +17,6 @@ router.get("/", async (req, res) => {
 
     let postData = [...data];
 
-    for (let i = 0; i < postData.length; i++) {
-      var author = await getUserById(postData[i].author);
-      postData[i].test = 100000;
-    }
-
     const respObj = {
       status: true,
       message: "All Posts Fetched!",
@@ -108,7 +103,7 @@ router.delete("/:id", authenticateJWT, async (req, res) => {
       return res.status(404).send(errObj);
     }
 
-    if (postData.author.toString() !== user._id) {
+    if (postData.author._id.toString() !== user._id) {
       const errObj = {
         status: false,
         message: "You are not authorized to delete the Post!",

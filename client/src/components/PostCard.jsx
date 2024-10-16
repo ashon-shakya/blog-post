@@ -11,12 +11,12 @@ const PostCard = ({ post }) => {
         <Card.Img
           variant="top"
           src="/blog1.jpg"
-          style={{ maxHeight: "300px", width: "100%", objectFit: "cover" }}
+          style={{ maxHeight: "200px", width: "100%", objectFit: "cover" }}
         />
         <Card.Body className="text-start">
           <Card.Title className="d-flex justify-content-between ">
             <Link
-              to="/article"
+              to={"/article?id=" + post._id}
               className="post"
               style={{ textDecoration: "none", color: "inherit" }}
             >
@@ -36,7 +36,7 @@ const PostCard = ({ post }) => {
             )}
           </Card.Title>
           <hr />
-          <Card.Text>{post.content}</Card.Text>
+          <Card.Text>{post.content.slice(0, 100)}...</Card.Text>
           <strong className="author-info">- {post.author}</strong>
         </Card.Body>
       </Card>

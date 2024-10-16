@@ -1,17 +1,38 @@
-import React from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col, Spinner, Alert } from "react-bootstrap"; // Added Spinner and Alert for better loading/error handling
 import Header from "../components/Navbar";
 import PostCard from "../components/PostCard";
-import Footer from "../components/footer";
+import Footer from "../components/Footer"; // Make sure the casing matches your component file
+import { fetchPosts } from "../utils/axiosHelper";
 
 const HomePage = () => {
-  const post = {
-    id: "id",
-    title: "Post Title",
-    content:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    author: "John Doe",
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [posts, setPosts] = useState([]);
+
+  const fillPosts = async () => {
+    setLoading(true); // Reset loading state when fetching posts
+    try {
+      const fetchedPosts = await fetchPosts();
+
+      if (fetchedPosts?.status === "error") {
+        throw new Error(fetchedPosts.message);
+      }
+      setPosts(fetchedPosts); // Ensure you access the correct data property
+    } catch (err) {
+      setError(err.message);
+      setPosts([]);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    fillPosts();
+  }, []);
+
+  if (loading) return <Spinner animation="border" />; // Use a spinner for loading state
+  if (error) return <Alert variant="danger">Error: {error}</Alert>; // Use an alert for error messages
 
   return (
     <>
@@ -24,15 +45,9 @@ const HomePage = () => {
         <Row className="mt-4">
           <Col className="text-center">
             <div className="d-flex gap-4 flex-wrap justify-content-center align-items-center">
-              <PostCard post={post} />
-              <PostCard post={post} />
-              <PostCard post={post} />
-              <PostCard post={post} />
-              <PostCard post={post} />
-              <PostCard post={post} />
-              <PostCard post={post} />
-              <PostCard post={post} />
-              <PostCard post={post} />
+              {posts.map((post) => (
+                <PostCard key={post._id} post={post} />
+              ))}
             </div>
           </Col>
         </Row>
