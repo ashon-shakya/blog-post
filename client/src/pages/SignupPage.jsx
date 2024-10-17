@@ -1,11 +1,30 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { Col, Container, Image, Row } from "react-bootstrap";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUserName] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSignupSubmit = async (e) => {
+    e.preventDefault();
+
+    const data = await axios.post("http://localhost:9000/api/v1/auth/signup", {
+      email,
+      password,
+      username,
+    });
+
+    navigate("/");
+  };
+
   return (
     <>
       <Container
@@ -15,7 +34,10 @@ const SignupPage = () => {
       >
         <Row>
           <Col>
-            <Form className="border p-4 rounded shadow">
+            <Form
+              className="border p-4 rounded shadow"
+              onSubmit={handleSignupSubmit}
+            >
               <Form.Group className="mb-3 d-flex align-items-center justify-content-center">
                 <Link to="/">
                   <Image
@@ -32,6 +54,10 @@ const SignupPage = () => {
                   type="text"
                   placeholder="User name"
                   name="username"
+                  value={username}
+                  onChange={(e) => {
+                    setUserName(e.target.value);
+                  }}
                 />
               </Form.Group>
 
@@ -41,6 +67,10 @@ const SignupPage = () => {
                   type="email"
                   placeholder="Enter email"
                   name="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                 />
               </Form.Group>
 
@@ -50,6 +80,10 @@ const SignupPage = () => {
                   type="password"
                   placeholder="Password"
                   name="password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                 />
               </Form.Group>
 
