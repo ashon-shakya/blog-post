@@ -1,5 +1,4 @@
 @api_url = http://localhost:9000/api/v1
-
 ###
 # fetch user by id
 # @prompt bearer_token

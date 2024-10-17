@@ -1,8 +1,7 @@
 import React from "react";
-import { Col, Container, Image, Row } from "react-bootstrap";
+import { Col, Container, Image, Row, Form } from "react-bootstrap";
 
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 
 const LoginPage = () => {

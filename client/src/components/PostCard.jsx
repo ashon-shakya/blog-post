@@ -10,7 +10,7 @@ const PostCard = ({ post }) => {
       <Card className="post">
         <Card.Img
           variant="top"
-          src="/blog1.jpg"
+          src={post.image}
           style={{ maxHeight: "300px", width: "100%", objectFit: "cover" }}
         />
         <Card.Body className="text-start">
@@ -37,7 +37,7 @@ const PostCard = ({ post }) => {
           </Card.Title>
           <hr />
           <Card.Text>{post.content}</Card.Text>
-          <strong className="author-info">- {post.author}</strong>
+          <strong className="author-info">- {post.author.username}</strong>
         </Card.Body>
       </Card>
     </>
