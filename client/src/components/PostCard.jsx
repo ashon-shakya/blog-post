@@ -36,7 +36,10 @@ const PostCard = ({ post }) => {
             )}
           </Card.Title>
           <hr />
-          <Card.Text>{post.content}</Card.Text>
+          <Card.Text>
+            {post.content.slice(0, 50)}...{" "}
+            <Link to={"/article?id=" + post._id}> Read More </Link>
+          </Card.Text>
           <strong className="author-info">- {post.author.username}</strong>
         </Card.Body>
       </Card>

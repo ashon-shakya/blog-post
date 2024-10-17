@@ -1,7 +1,10 @@
 import { Container, Form, Nav, Navbar, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useAuth } from "../utils/AuthContext";
 
 const Header = () => {
+  const { user, logout } = useAuth();
+
   return (
     <>
       <Navbar className="bg-body-tertiary">
@@ -20,7 +23,8 @@ const Header = () => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/mypost">My Post</Nav.Link>
+
+              {user ? <Nav.Link href="/mypost">My Post</Nav.Link> : ""}
             </Nav>
           </Navbar.Collapse>
 
@@ -34,9 +38,15 @@ const Header = () => {
             <Button className="me-2" variant="outline-success">
               Search
             </Button>
-            <Link to="/login">
-              <Button variant="warning">Login</Button>
-            </Link>
+            {user ? (
+              <Button variant="warning" onClick={logout}>
+                Logout
+              </Button>
+            ) : (
+              <Link to="/login">
+                <Button variant="primary">Login</Button>
+              </Link>
+            )}
           </Form>
         </Container>
       </Navbar>

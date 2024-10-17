@@ -4,11 +4,14 @@ import Footer from "../components/footer";
 import { Col, Container, Row, Image } from "react-bootstrap";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { useAuth } from "../utils/AuthContext";
 
 const PostPage = () => {
   let location = useLocation();
   let queryParams = new URLSearchParams(location.search);
   const postId = queryParams.get("id");
+
+  const { logout } = useAuth();
 
   // Sample data for the article
   const [article, setArticle] = useState({});
@@ -52,6 +55,7 @@ const PostPage = () => {
                 <small>{article.date}</small>
               </p>
             </div>
+            <button onClick={logout}>LOGOUT</button>
           </Col>
         </Row>
       </Container>

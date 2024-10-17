@@ -1,10 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Container, Image, Row, Form } from "react-bootstrap";
 
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
+import { useAuth } from "../utils/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { login } = useAuth();
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    await login({
+      email,
+      password,
+    });
+
+    navigate("/");
+  };
+
   return (
     <>
       <Container
@@ -14,7 +32,10 @@ const LoginPage = () => {
       >
         <Row>
           <Col>
-            <Form className="border p-4 rounded shadow">
+            <Form
+              className="border p-4 rounded shadow"
+              onSubmit={handleOnSubmit}
+            >
               <Form.Group className="mb-3 d-flex align-items-center justify-content-center">
                 <Link to="/">
                   <Image
@@ -27,12 +48,26 @@ const LoginPage = () => {
               <hr />
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
               </Form.Group>
 
               <Button variant="success" type="submit">
