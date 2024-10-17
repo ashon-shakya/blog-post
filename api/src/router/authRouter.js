@@ -70,6 +70,7 @@ router.post("/login", async (req, res) => {
       message: "Login Successful",
       data: {
         token,
+        username: user.username,
       },
     };
 
