@@ -16,7 +16,7 @@ const PostCard = ({ post }) => {
         <Card.Body className="text-start">
           <Card.Title className="d-flex justify-content-between ">
             <Link
-              to="/article"
+              to={"/article?id=" + post._id}
               className="post"
               style={{ textDecoration: "none", color: "inherit" }}
             >

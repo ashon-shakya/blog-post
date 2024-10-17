@@ -17,11 +17,6 @@ router.get("/", async (req, res) => {
 
     let postData = [...data];
 
-    for (let i = 0; i < postData.length; i++) {
-      var author = await getUserById(postData[i].author);
-      postData[i].test = 100000;
-    }
-
     const respObj = {
       status: true,
       message: "All Posts Fetched!",
