@@ -49,6 +49,7 @@ export const fetchPost = async (postId) => {
       title: data.title,
       content: data.content,
       author: data.author.username,
+      image: data.image,
     };
     return tempData;
   } catch (error) {

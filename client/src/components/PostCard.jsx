@@ -10,7 +10,7 @@ const PostCard = ({ post }) => {
       <Card className="post">
         <Card.Img
           variant="top"
-          src="/blog1.jpg"
+          src={post.image}
           style={{ maxHeight: "200px", width: "100%", objectFit: "cover" }}
         />
         <Card.Body className="text-start">

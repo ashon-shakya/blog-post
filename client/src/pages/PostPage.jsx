@@ -12,7 +12,7 @@ const PostPage = () => {
     content: ``,
     author: "",
     date: "",
-    imageUrl: "/blog1.jpg", // Placeholder image
+    image: "/blog1.jpg", // Placeholder image
   });
 
   const location = useLocation();
@@ -21,6 +21,7 @@ const PostPage = () => {
 
   const getPost = async (postid) => {
     const postData = await fetchPost(postid);
+    console.log(postData);
     setPost(postData);
   };
 
@@ -36,7 +37,7 @@ const PostPage = () => {
         <Row>
           <Col>
             <Image
-              src={post.imageUrl}
+              src={post.image}
               alt="Article"
               fluid
               className="mb-4 rounded"
