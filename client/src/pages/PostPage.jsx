@@ -1,23 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Navbar";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import { Col, Container, Row, Image } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
+import { fetchPost } from "../utils/axiosHelper";
 
 const PostPage = () => {
   // Sample data for the article
-  const article = {
-    title: "Understanding React and Bootstrap",
-    content: `
-      React and Bootstrap can work seamlessly together to create beautiful 
-      and responsive web pages. In this post, we will explore how to create 
-      an article page using React components and Bootstrap for styling.
-      Let's dive into how to structure a page to display the article with an image, 
-      title, content, and author details.
-    `,
-    author: "John Doe",
-    date: "October 16, 2024",
-    imageUrl: "/blog1.jpg", // Placeholder image
+  const [post, setPost] = useState({
+    title: "",
+    content: ``,
+    author: "",
+    date: "",
+    image: "/blog1.jpg", // Placeholder image
+  });
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const pid = queryParams.get("id");
+
+  const getPost = async (postid) => {
+    const postData = await fetchPost(postid);
+    console.log(postData);
+    setPost(postData);
   };
+
+  useEffect(() => {
+    getPost(pid);
+  }, []);
 
   return (
     <>
@@ -27,7 +37,7 @@ const PostPage = () => {
         <Row>
           <Col>
             <Image
-              src={article.imageUrl}
+              src={post.image}
               alt="Article"
               fluid
               className="mb-4 rounded"
@@ -39,15 +49,15 @@ const PostPage = () => {
         {/* Title, Content, and Author Section */}
         <Row>
           <Col md={{ span: 8, offset: 2 }}>
-            <h1 className="mb-3">{article.title}</h1>
+            <h1 className="mb-3">{post.title}</h1>
             <hr />
-            <p>{article.content}</p>
+            <p>{post.content}</p>
             <div className="author-info mt-4">
               <p>
-                <strong>Written by:</strong> {article.author}
+                <strong>Written by:</strong> {post.author}
               </p>
               <p>
-                <small>{article.date}</small>
+                <small>{post.date}</small>
               </p>
             </div>
           </Col>
