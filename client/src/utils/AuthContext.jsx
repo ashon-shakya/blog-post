@@ -1,10 +1,6 @@
 // src/utils/AuthContext.js
 import React, { createContext, useContext, useState } from "react";
-import axios from "axios";
-const rootAPI = import.meta.env.VITE_API_URL;
-const postEP = rootAPI + "/post";
-const authEP = rootAPI + "/auth";
-const userEP = rootAPI + "/user";
+import { userLogin } from "./axiosHelper";
 
 const AuthContext = createContext();
 
@@ -15,8 +11,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (loginInfo) => {
     try {
-      const response = await axios.post(`${authEP}/login`, loginInfo);
-      const { token, username } = response.data.data;
+      const response = await userLogin(loginInfo);
+      const { token, username } = response.data;
       localStorage.setItem("jwtToken", token);
       setUser(username);
     } catch (error) {

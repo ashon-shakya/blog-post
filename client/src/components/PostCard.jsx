@@ -37,7 +37,7 @@ const PostCard = ({ post }) => {
           </Card.Title>
           <hr />
           <Card.Text>{post.content.slice(0, 100)}...</Card.Text>
-          <strong className="author-info">- {post.author}</strong>
+          <strong className="author-info">- {post.author?.username}</strong>
         </Card.Body>
       </Card>
     </>

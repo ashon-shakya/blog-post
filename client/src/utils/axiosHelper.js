@@ -5,58 +5,41 @@ const authEP = rootAPI + "/auth";
 const userEP = rootAPI + "/user";
 
 export const userLogin = async (loginInfo) => {
+  const obj = {
+    method: "post",
+    url: `${authEP}/login`,
+    data: loginInfo,
+  };
+
+  return await apiProcessor(obj);
+};
+
+const apiProcessor = async ({ method, url, data, headers }) => {
   try {
-    const { data } = await axios.post(`${authEP}/login`, loginInfo);
-    return data;
+    const response = await axios({
+      method,
+      url,
+      data,
+      headers,
+    });
+    return response.data;
   } catch (error) {
-    console.log(error);
     return {
       status: "error",
-      message: error.message,
+      message: error?.response?.data?.error || error.message,
     };
   }
 };
 
 export const fetchPosts = async () => {
-  try {
-    const { data } = await axios.get(postEP);
-    const tempData = data.data.map((i) => {
-      return {
-        _id: i._id,
-        title: i.title,
-        content: i.content,
-        image: i.image,
-        author: i.author.username,
-      };
-    });
-    return tempData;
-  } catch (error) {
-    console.log(error);
-    return {
-      status: "error",
-      message: error.message,
-    };
-  }
+  const obj = { method: "get", url: postEP };
+  return await apiProcessor(obj);
 };
 
 export const fetchPost = async (postId) => {
-  try {
-    const {
-      data: { data },
-    } = await axios.get(`${postEP}/${postId}`);
-    const tempData = {
-      _id: data._id,
-      title: data.title,
-      content: data.content,
-      author: data.author.username,
-      image: data.image,
-    };
-    return tempData;
-  } catch (error) {
-    console.log(error);
-    return {
-      status: "error",
-      message: error.message,
-    };
-  }
+  const obj = {
+    method: "get",
+    url: `${postEP}/${postId}`,
+  };
+  return await apiProcessor(obj);
 };

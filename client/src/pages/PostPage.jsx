@@ -20,9 +20,12 @@ const PostPage = () => {
   const pid = queryParams.get("id");
 
   const getPost = async (postid) => {
-    const postData = await fetchPost(postid);
-    console.log(postData);
-    setPost(postData);
+    const response = await fetchPost(postid);
+    if (response.status == "error") {
+      setPost({});
+    } else {
+      setPost(response.data);
+    }
   };
 
   useEffect(() => {
@@ -54,7 +57,7 @@ const PostPage = () => {
             <p>{post.content}</p>
             <div className="author-info mt-4">
               <p>
-                <strong>Written by:</strong> {post.author}
+                <strong>Written by:</strong> {post.author?.username}
               </p>
               <p>
                 <small>{post.date}</small>

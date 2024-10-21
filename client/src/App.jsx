@@ -8,6 +8,7 @@ import SignupPage from "./pages/SignupPage";
 import PostPage from "./pages/PostPage";
 import MyPostPage from "./pages/MyPostPage";
 import CreatePostPage from "./pages/CreatePostPage";
+import { Auth } from "./auth/Auth";
 
 function App() {
   return (
@@ -18,8 +19,24 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
 
         <Route path="/article" element={<PostPage />} />
-        <Route path="/mypost" element={<MyPostPage />} />
-        <Route path="/mypost/create" element={<CreatePostPage />} />
+
+        <Route
+          path="/mypost"
+          element={
+            <Auth>
+              {" "}
+              <MyPostPage />{" "}
+            </Auth>
+          }
+        />
+        <Route
+          path="/mypost/create"
+          element={
+            <Auth>
+              <CreatePostPage />{" "}
+            </Auth>
+          }
+        />
       </Routes>
     </>
   );

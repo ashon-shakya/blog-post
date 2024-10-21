@@ -60,3 +60,9 @@ GET {{api_url}}/post/{{id}}
 DELETE {{api_url}}/post/{{post_id}}
 Authorization: Bearer {{bearer_token}}
 
+
+###
+# @prompt bearer_token
+GET {{api_url}}/user/post
+Authorization: Bearer {{bearer_token}}
+

@@ -21,15 +21,19 @@ router.post("/signup", async (req, res) => {
     });
 
     const respObj = {
-      status: true,
+      status: "success",
       message: "User created successfully!",
     };
 
     res.status(200).send(respObj);
   } catch (err) {
     let errObj = {
-      status: false,
-      message: err.message || "Error Creating User",
+      status: "error",
+      message: "Error Creating",
+      error: {
+        code: 500,
+        details: err.message || "Error creating user",
+      },
     };
 
     res.status(500).send(errObj);
@@ -44,8 +48,12 @@ router.post("/login", async (req, res) => {
 
   if (!user) {
     const errObj = {
-      status: false,
-      message: "Invalid email or password",
+      status: "error",
+      message: "Unauthenticated",
+      error: {
+        code: 401,
+        details: "Invalide email or password",
+      },
     };
     return res.status(401).send(errObj);
   }
@@ -54,19 +62,27 @@ router.post("/login", async (req, res) => {
 
   if (!isMatch) {
     const errObj = {
-      status: false,
-      message: "Invalid email or password",
+      status: "error",
+      message: "Unauthenticated",
+      error: {
+        code: 401,
+        details: "Invalide email or password",
+      },
     };
 
     return res.status(400).json(errObj);
   } else {
     // login successful
-    const token = jwt.sign({ _id: user._id }, config.jwtSecret, {
-      expiresIn: config.jwtExpire,
-    });
+    const token = jwt.sign(
+      { _id: user._id, email: user.email },
+      config.jwtSecret,
+      {
+        expiresIn: config.jwtExpire,
+      }
+    );
 
     const respObj = {
-      status: true,
+      status: "success",
       message: "Login Successful",
       data: {
         token,

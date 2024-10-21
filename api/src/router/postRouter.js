@@ -6,7 +6,6 @@ import {
   getPosts,
 } from "../models/postSchema.js";
 import { authenticateJWT } from "../middleware/authenticate.js";
-import { getUserById } from "../models/userSchema.js";
 
 const router = express.Router();
 
@@ -18,7 +17,7 @@ router.get("/", async (req, res) => {
     let postData = [...data];
 
     const respObj = {
-      status: true,
+      status: "success",
       message: "All Posts Fetched!",
       data: postData,
     };
@@ -26,8 +25,12 @@ router.get("/", async (req, res) => {
     return res.status(200).send(respObj);
   } catch (err) {
     const errObj = {
-      status: false,
-      message: err.message || "Error fetching post",
+      status: "error",
+      message: "Error fetching",
+      error: {
+        code: 500,
+        details: err.message || "Erro fetching post",
+      },
     };
 
     return res.status(500).send(errObj);
@@ -48,15 +51,19 @@ router.post("/", authenticateJWT, async (req, res) => {
     });
 
     const respObj = {
-      status: true,
+      status: "success",
       message: "Post Created Successfully!",
     };
 
     return res.status(201).send(respObj);
   } catch (err) {
     const errObj = {
-      status: false,
-      message: err.message || "Error creating post",
+      status: "error",
+      message: "Error creating",
+      error: {
+        code: 500,
+        details: err.message || "Error creating post",
+      },
     };
 
     return res.status(500).send(errObj);
@@ -70,7 +77,7 @@ router.get("/:id", async (req, res) => {
     const postData = await getPostById(id);
 
     const respObj = {
-      status: true,
+      status: "success",
       message: "Successfully Fetched Post",
       data: postData,
     };
@@ -78,8 +85,12 @@ router.get("/:id", async (req, res) => {
     return res.status(200).send(respObj);
   } catch (err) {
     const errObj = {
-      status: false,
-      message: err.message || "Error fetching Post",
+      status: "error",
+      message: "Error fetching",
+      error: {
+        code: 500,
+        details: err.message || "Error fetching post",
+      },
     };
 
     return res.status(500).send(errObj);
@@ -96,8 +107,12 @@ router.delete("/:id", authenticateJWT, async (req, res) => {
 
     if (!postData) {
       const errObj = {
-        status: false,
-        message: "Post not found",
+        status: "error",
+        message: "Not Found",
+        error: {
+          code: 400,
+          details: "Post not found",
+        },
       };
 
       return res.status(404).send(errObj);
@@ -105,8 +120,12 @@ router.delete("/:id", authenticateJWT, async (req, res) => {
 
     if (postData.author._id.toString() !== user._id) {
       const errObj = {
-        status: false,
-        message: "You are not authorized to delete the Post!",
+        status: "error",
+        message: "Unauthorized",
+        error: {
+          code: 403,
+          details: "You are not authorized!",
+        },
       };
 
       return res.status(403).send(errObj);
@@ -115,15 +134,19 @@ router.delete("/:id", authenticateJWT, async (req, res) => {
     await deletePost(id);
 
     const respObj = {
-      status: true,
+      status: "success",
       message: "Post Deleted Successfully!",
     };
 
     return res.status(200).send(respObj);
   } catch (err) {
     const errObj = {
-      status: false,
-      message: err.message || "Error Deleting Post",
+      status: "error",
+      message: "Error Deleting",
+      error: {
+        code: 500,
+        details: err.message || "Error Deleting post",
+      },
     };
 
     return res.status(500).send(errObj);

@@ -13,12 +13,15 @@ const HomePage = () => {
   const fillPosts = async () => {
     setLoading(true); // Reset loading state when fetching posts
     try {
-      const fetchedPosts = await fetchPosts();
+      const response = await fetchPosts();
 
-      if (fetchedPosts?.status === "error") {
-        throw new Error(fetchedPosts.message);
+      if (response?.status === "error") {
+        throw new Error(response.message);
+        setPosts([]);
+      } else {
+        console.log(response.data);
+        setPosts(response.data); // Ensure you access the correct data property
       }
-      setPosts(fetchedPosts); // Ensure you access the correct data property
     } catch (err) {
       setError(err.message);
       setPosts([]);
