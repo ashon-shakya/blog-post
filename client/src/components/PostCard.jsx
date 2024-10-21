@@ -11,13 +11,13 @@ const PostCard = ({ post }) => {
         <Card.Img
           variant="top"
           src={post.image}
-          style={{ maxHeight: "200px", width: "100%", objectFit: "cover" }}
+          style={{ height: "200px", width: "100%", objectFit: "cover" }}
         />
         <Card.Body className="text-start">
           <Card.Title className="d-flex justify-content-between ">
             <Link
               to={"/article?id=" + post._id}
-              className="post"
+              className=""
               style={{ textDecoration: "none", color: "inherit" }}
             >
               {post.title}

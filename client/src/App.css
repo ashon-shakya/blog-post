@@ -37,6 +37,10 @@ footer.footer {
   align-items: center;
 }
 
+p.card-text {
+  height: 100px;
+}
+
 @media screen and (max-width: 800px) {
   .post {
     width: 100%;
