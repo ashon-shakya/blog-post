@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import { Col, Container, Row, Image } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { fetchPost } from "../utils/axiosHelper";
+import { CommentComponent } from "../components/commentComponent";
 
 const PostPage = () => {
   // Sample data for the article
@@ -34,7 +35,6 @@ const PostPage = () => {
 
   return (
     <>
-      <Header />
       <Container className="mt-5">
         {/* Article Image with height restriction */}
         <Row>
@@ -54,7 +54,10 @@ const PostPage = () => {
           <Col md={{ span: 8, offset: 2 }}>
             <h1 className="mb-3">{post.title}</h1>
             <hr />
-            <p>{post.content}</p>
+            <p>
+              {" "}
+              <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            </p>
             <div className="author-info mt-4">
               <p>
                 <strong>Written by:</strong> {post.author?.username}
@@ -65,9 +68,15 @@ const PostPage = () => {
             </div>
           </Col>
         </Row>
+        <Row>
+          <Col md={{ span: 8, offset: 2 }}>
+            <CommentComponent
+              postid={post._id}
+              comments={post.comments ?? []}
+            />
+          </Col>
+        </Row>
       </Container>
-
-      <Footer />
     </>
   );
 };

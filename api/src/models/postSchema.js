@@ -18,6 +18,18 @@ const postSchema = new mongoose.Schema({
     ref: "user",
     required: true,
   },
+  likes: [{ type: String }],
+  comments: [
+    {
+      comment: { type: String, required: true },
+      userid: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+        required: true,
+      },
+      commentedAt: { type: Date, default: Date.now },
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
@@ -26,20 +38,16 @@ const postSchema = new mongoose.Schema({
 
 export const Post = mongoose.model("post", postSchema);
 
-export const getPosts = async () => {
-  return await Post.find().populate({
-    path: "author",
-    select: "-_id",
-  });
+export const getPosts = async (page = 1, limit = 5) => {
+  return await Post.find()
+    .populate("author")
+    .skip(limit * (page - 1))
+    .limit(limit)
+    .sort({ createdAt: -1 });
 };
 
 export const getPostById = async (id) => {
-  return await Post.findById(id)
-    .populate({
-      path: "author",
-      select: "-_id",
-    })
-    .exec();
+  return await Post.findById(id).populate("author comments.userid");
 };
 
 export const createPost = async (post) => {
@@ -47,11 +55,11 @@ export const createPost = async (post) => {
   return await newPost.save();
 };
 
-export const updatePost = async (id, post) => {
+export const updatePost = async (id, updateData) => {
   const data = await Post.findByIdAndUpdate(
     id,
     {
-      $set: post,
+      $set: updateData,
     },
     { new: true }
   );

@@ -1,10 +1,22 @@
 import React from "react";
 import { Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrash,
+  faPenToSquare,
+  faHeart,
+} from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../utils/AuthContext";
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, likeFunction, deleteFunction }) => {
+  const navigate = useNavigate();
+  const { userid } = useAuth();
+
+  const updateFunction = (id) => {
+    navigate("/mypost/update?id=" + id);
+  };
+
   return (
     <>
       <Card className="post">
@@ -18,25 +30,55 @@ const PostCard = ({ post }) => {
             <Link
               to={"/article?id=" + post._id}
               className=""
-              style={{ textDecoration: "none", color: "inherit" }}
+              style={{
+                maxWidth: "200px",
+                textDecoration: "none",
+                color: "inherit",
+              }}
             >
-              {post.title}
+              {post.title.slice(0, 30)} ...
             </Link>
+            <div className="edit-btns">
+              <div className="like-counter">
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  size="sm"
+                  style={{
+                    cursor: "pointer",
+                    color: post.likes.includes(userid) ? "red" : "grey",
+                  }}
+                  title="Like Article"
+                  onClick={() => likeFunction(post._id)} // Example action
+                />
+                {post.likes.length}
+              </div>
 
-            {post.owner ? (
-              <FontAwesomeIcon
-                icon={faTrash}
-                size="sm"
-                style={{ cursor: "pointer", color: "black" }}
-                title="Delete Article"
-                onClick={() => alert("Delete this article?")} // Example action
-              />
-            ) : (
-              ""
-            )}
+              {post.owner ? (
+                <>
+                  <FontAwesomeIcon
+                    icon={faPenToSquare}
+                    size="sm"
+                    style={{ cursor: "pointer", color: "black" }}
+                    title="Update Article"
+                    onClick={() => updateFunction(post._id)} // Example action
+                  />
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    size="sm"
+                    style={{ cursor: "pointer", color: "black" }}
+                    title="Delete Article"
+                    onClick={() => deleteFunction(post._id)} // Example action
+                  />
+                </>
+              ) : (
+                ""
+              )}
+            </div>
           </Card.Title>
           <hr />
-          <Card.Text>{post.content.slice(0, 100)}...</Card.Text>
+          <Card.Text>
+            {post.content.replace(/<[^>]+>/g, "").slice(0, 100)}...
+          </Card.Text>
           <strong className="author-info">- {post.author?.username}</strong>
         </Card.Body>
       </Card>
